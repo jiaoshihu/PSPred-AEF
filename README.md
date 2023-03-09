@@ -20,11 +20,9 @@ pandas==1.5.3
 
 # 3 Running
 
-Download the BiLSTM embedding model here, and put it in the directory named "Model";
+Changing working dir to ATGPred-main, and then running the following command:
 
-Changing working dir to iPVP-DRLF-main, and then running the following command:
-
-python iPVP-DRLF-main.py -i test.fasta -o prediction_results.csv
+python main.py -i test.fasta -o prediction_results.csv
 
 -i: input file in fasta format
 
