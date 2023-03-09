@@ -1,21 +1,20 @@
 #!/usr/bin/env python
 # _*_coding:utf-8_*_
-# @Time : 2022.02.14
+# @Time : 2023.02.14
 # @Author : jiaoshihu
 # @Email : shihujiao@163.com
 # @IDE : PyCharm
 # @File : main.py
 
-import sys
 import os
 import argparse
 import re
-import pandas as pd
-import numpy as np
-import torch.nn.functional as F
 import torch
 import pickle
 import time
+import pandas as pd
+import numpy as np
+import torch.nn.functional as F
 from preprocess import data_process
 from model import PSPred_model
 
@@ -51,7 +50,7 @@ def load_text_file(fast_file):
         for line in records:
             array = line.split('\n')
             sequence = re.sub('[^ACDEFGHIKLMNPQRSTUVWYX]','-',''.join(array[1:]).upper())
-            seq_data.append(sequence[2:31])
+            seq_data.append(sequence)
         return seq_data
 
 if __name__ == '__main__':
@@ -75,13 +74,13 @@ if __name__ == '__main__':
     for i, seq in enumerate(sequences_list):
         sequences_list[i] = ''.join(seq)
 
-    results = pd.DataFrame(np.zeros([len(y_pred), 4]), columns=["Index", "Sequences", "Prediction", "Confidence"])
+    results = pd.DataFrame(np.zeros([len(y_pred), 4]), columns=["Seq_ID", "Sequences", "Prediction", "Confidence"])
     for i in range(len(y_pred)):
         if y_pred[i] == 1:
             y_prob = str(round(y_pred_prob[i] * 100, 2)) + "%"
             results.iloc[i, :] = [round(i + 1), sequences_list[i], "p site", y_prob]
         else:
-            y_prob = str(round(y_pred_prob[i] * 100, 2)) + "%"
+            y_prob = str(round((1-y_pred_prob[i]) * 100, 2)) + "%"
             results.iloc[i, :] = [round(i + 1), sequences_list[i], "Non-p site", y_prob]
     os.chdir("Results")
     results.to_csv(args.o, index=False)
