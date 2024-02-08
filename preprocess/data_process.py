@@ -53,7 +53,7 @@ def construct_dataset(seq_ids):
 
 def load_data(sequence_list):
     token_list = transform_token(sequence_list)
-    data_train = pad_sequence(token_list)
-    test_loader = construct_dataset(data_train)
+    data_token = pad_sequence(token_list)
+    test_loader = construct_dataset(data_token)
     return test_loader
 
